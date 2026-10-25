@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bill Splitter - Settle Up Fast & Fair</title>
+    <meta name="description" content="Split bills across multiple occasions with friends. Exact to the penny, name-by-name settlement." />
+    <meta property="og:title" content="Bill Splitter - Settle Up Fast & Fair" />
+    <meta property="og:description" content="Split bills across multiple occasions with friends. Exact to the penny, name-by-name settlement." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- Header Banner -->
+    <header class="site-header">
+      <div class="header-container">
+        <div class="brand-wrapper">
+          <div class="brand-icon" aria-hidden="true">🧾</div>
+          <div>
+            <h1 class="site-title">Bill Splitter</h1>
+            <p class="site-tagline">Settle up with friends across meals &bull; Exact to the penny</p>
+          </div>
+        </div>
+        <div class="header-actions">
+          <!-- Currency Dropdown -->
+          <div class="currency-wrapper">
+            <label for="currency-select" class="currency-label">Currency:</label>
+            <select id="currency-select" class="currency-select" aria-label="Select bill currency">
+              <option value="$" selected>USD ($)</option>
+              <option value="€">EUR (€)</option>
+              <option value="£">GBP (£)</option>
+              <option value="₹">INR (₹)</option>
+              <option value="¥">JPY (¥)</option>
+              <option value="CA$">CAD (CA$)</option>
+              <option value="A$">AUD (A$)</option>
+              <option value="CHF ">CHF</option>
+            </select>
+          </div>
+          <button id="try-example-btn" class="btn-delighter" type="button" aria-label="Load a sample multi-occasion split">
+            <span aria-hidden="true">⚡</span>
+            <span>Try an Example</span>
+          </button>
+          <button id="theme-toggle-btn" class="theme-toggle" type="button" aria-label="Toggle light or dark theme">
+            <span id="theme-toggle-icon" aria-hidden="true">🌙</span>
+            <span id="theme-toggle-label">Dark Mode</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-wrapper">
+      <div class="flow-grid">
+        <!-- Step 1: Input Section -->
+        <section class="card input-panel" aria-labelledby="step-1-title">
+          <div class="step-header">
+            <h2 id="step-1-title" class="step-title">
+              <span class="step-icon" aria-hidden="true">📝</span>
+              1. Enter
+            </h2>
+          </div>
+
+          <form id="split-form" novalidate onsubmit="return false;">
+            <!-- Dynamic Occasions List -->
+            <div id="occasions-list" class="occasions-list">
+              <!-- Rendered dynamically by script.js -->
+            </div>
+
+            <!-- Add Another Occasion Button -->
+            <button type="button" id="add-occasion-btn" class="btn-add-occasion" aria-label="Add another bill or meal to split">
+              <span aria-hidden="true">➕</span> Add Another Bill / Occasion
+            </button>
+
+            <!-- Action Buttons -->
+            <div class="button-row">
+              <button type="submit" id="split-btn" class="btn btn-primary" aria-label="Calculate bill split">
+                <span aria-hidden="true">✨</span>
+                Split the Bill
+              </button>
+              <button type="button" id="reset-btn" class="btn btn-secondary" aria-label="Reset all inputs, results, and history">
+                <span aria-hidden="true">↺</span>
+                Reset All
+              </button>
+            </div>
+          </form>
+        </section>
+
+        <!-- Step 2: Result Section -->
+        <section class="card result-card" aria-labelledby="step-2-title" aria-live="polite">
+          <div class="step-header">
+            <h2 id="step-2-title" class="step-title">
+              <span class="step-icon" aria-hidden="true">💳</span>
+              2. Result
+            </h2>
+          </div>
+
+          <!-- Empty / Message State -->
+          <div id="result-empty" class="result-empty">
+            <div class="empty-icon" aria-hidden="true">🍽️</div>
+            <h3 class="empty-title">Your result will appear here</h3>
+            <p class="empty-subtitle">Enter the bill amounts and friend names to see who owes what.</p>
+            <div id="result-message" class="result-message-box" role="status"></div>
+          </div>
+
+          <!-- Active Result Content -->
+          <div id="result-content" class="result-content">
+            <!-- Hero Share Display -->
+            <div class="result-hero">
+              <div class="result-badge-wrapper">
+                <span id="result-badge" class="status-badge">
+                  <span aria-hidden="true">✓</span> Exact Split Verified
+                </span>
+              </div>
+              <div class="result-amount-display">
+                <span id="result-amount" class="result-amount">$0.00</span>
+                <span id="result-unit" class="result-unit">total split</span>
+              </div>
+              <p id="result-summary" class="result-summary"></p>
+            </div>
+
+            <!-- Progress Bar / Visual Indicator -->
+            <div class="progress-container">
+              <div class="progress-header">
+                <span>Allocation Progress</span>
+                <span>100% Accounted For</span>
+              </div>
+              <div class="progress-track" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                <div id="result-bar-fill" class="progress-fill"></div>
+              </div>
+            </div>
+
+            <!-- Cumulative Total Split by Person Across Occasions -->
+            <div class="person-totals-container">
+              <h3 class="section-subtitle">
+                <span>Total Owed per Person</span>
+                <span aria-hidden="true">👤</span>
+              </h3>
+              <div id="person-totals-list" class="person-totals-list">
+                <!-- Rendered dynamically -->
+              </div>
+            </div>
+
+            <!-- Breakdown by Occasion -->
+            <div class="breakdown-box">
+              <h4 class="breakdown-title">
+                <span>Breakdown per Occasion</span>
+                <span aria-hidden="true">📋</span>
+              </h4>
+              <div id="occasions-breakdown-list" class="occasions-breakdown-list">
+                <!-- Rendered dynamically -->
+              </div>
+              <div id="result-total-check" class="result-total-check"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Step 3: Recent History Section -->
+        <section class="card step-history" aria-labelledby="step-3-title">
+          <div class="step-header">
+            <h2 id="step-3-title" class="step-title">
+              <span class="step-icon" aria-hidden="true">🕒</span>
+              3. Recent
+            </h2>
+            <div class="history-header-actions">
+              <button type="button" id="clear-history-btn" class="btn-small" aria-label="Clear recent calculations">Clear History</button>
+            </div>
+          </div>
+
+          <p class="history-instructions">Click a card to restore it, or check multiple boxes to see combined split totals across events.</p>
+
+          <div id="history-empty" class="history-empty">
+            <p>No recent calculations yet. Split a bill above to save history.</p>
+          </div>
+
+          <ul id="history-list" class="history-list" aria-label="Recent calculations">
+            <!-- Dynamically populated -->
+          </ul>
+
+          <!-- Multi-Select Combined Summary -->
+          <div id="history-combined-section" class="history-combined-section">
+            <div class="history-combined-card">
+              <div class="history-combined-header">
+                <h3 class="combined-title">
+                  <span aria-hidden="true">📊</span> Combined Total Across Selected Bills
+                </h3>
+                <button type="button" id="load-combined-btn" class="btn-small" aria-label="Load all selected bills into the calculator">
+                  Load Selected into Calculator
+                </button>
+              </div>
+              <p id="history-combined-summary" class="combined-summary"></p>
+              <div id="history-combined-list" class="history-combined-list">
+                <!-- Dynamically populated -->
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+      <p>Bill Splitter &bull; Fast, friendly multi-occasion dining settlement</p>
+    </footer>
+
+    <!-- Script file -->
+    <script src="script.js"></script>
+  </body>
+</html>
